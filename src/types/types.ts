@@ -1,5 +1,8 @@
+import { ReactNode } from "react";
+
 // src/types/types.ts
 export type Recipe = {
+  description: ReactNode;
   id: number;
   title: string;
   category: string;

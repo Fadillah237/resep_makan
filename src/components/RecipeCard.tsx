@@ -1,28 +1,32 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Recipe } from '../types/types'; // Impor tipe Recipe
 
 type RecipeCardProps = {
-  recipe: {
-    id: string;
-    title: string;
-    description: string;
-    imageUrl: string;
-  };
+  recipe: Recipe;
   onDelete: () => void;
+  onEdit: () => void;  // Tambahkan properti onEdit
   style?: object;  // Tambahkan properti style opsional
 };
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onDelete, style }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onDelete, onEdit, style }) => {
   return (
     <View style={[styles.card, style]}> {/* Terapkan style jika ada */}
       <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
       <View style={styles.details}>
         <Text style={styles.title}>{recipe.title}</Text>
-        <Text style={styles.description}>{recipe.description}</Text>
+        <Text style={styles.category}>{recipe.category}</Text>
+        <Text style={styles.description}>{recipe.ingredients.join(', ')}</Text> {/* Gabungkan array ingredients menjadi string */}
+        <Text style={styles.rating}>Rating: {recipe.rating}</Text>
       </View>
-      <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
-        <Text style={styles.deleteText}>Hapus</Text>
-      </TouchableOpacity>
+      <View style={styles.actions}>
+        <TouchableOpacity onPress={onEdit}>
+          <Text style={styles.editText}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
+          <Text style={styles.deleteText}>Hapus</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -53,8 +57,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  category: {
+    color: '#6c757d',
+  },
   description: {
     color: '#6c757d',
+  },
+  rating: {
+    color: '#ff8c00',
+  },
+  actions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  editText: {
+    color: 'blue',
+    fontWeight: 'bold',
   },
   deleteButton: {
     justifyContent: 'center',
